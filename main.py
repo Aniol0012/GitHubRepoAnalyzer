@@ -31,20 +31,24 @@ def analyze_commits(commits):
             contributors[username]['lines_added'] += 10
     return contributors
 
+def get_names(contributors, type=None):
+    if not type:
+        return [name for name in contributors]
+    return [f"{name} [{contributors[name][type]}]" for name in contributors]
+
 def plot_data(contributors):
-    names = [f"{name} [{contributors[name]['commits']}]" for name in contributors]
     commit_counts = [contrib['commits'] for contrib in contributors.values()]
     lines_added = [contrib['lines_added'] for contrib in contributors.values()]
     
     fig, ax = plt.subplots(2, 1, figsize=(10, 8))
     
     if config.SHOW_COMMITS_PLOT:
-        ax[0].bar(names, commit_counts, color=config.COMMITS_BAR_COLOR)
+        ax[0].bar(get_names(contributors, 'commits'), commit_counts, color=config.COMMITS_BAR_COLOR)
         ax[0].set_title('Number of Commits per Contributor')
         ax[0].set_ylabel('Number of Commits')
     
     if config.SHOW_LINES_ADDED_PLOT:
-        ax[1].bar(names, lines_added, color=config.LINES_ADDED_BAR_COLOR)
+        ax[1].bar(get_names(contributors, 'lines_added'), lines_added, color=config.LINES_ADDED_BAR_COLOR)
         ax[1].set_title('Lines Added per Contributor')
         ax[1].set_ylabel('Number of Lines Added')
     
