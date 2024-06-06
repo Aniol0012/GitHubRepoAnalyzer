@@ -36,7 +36,7 @@ def analyze_commits(commits: list) -> dict:
             if username not in contributors:
                 contributors[username] = {"commits": 0, "lines_added": 0}
             contributors[username]["commits"] += 1
-            
+
             commit_details = get_commit_details(commit["url"])
             stats = commit_details.get("stats", {})
             contributors[username]["lines_added"] += stats.get("additions", 0)
