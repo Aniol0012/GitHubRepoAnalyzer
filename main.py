@@ -21,6 +21,12 @@ def get_commits() -> list[dict]:
     return commits
 
 
+def get_commit_details(commit_url: str) -> dict:
+    headers = {"Authorization": f"token {token}"}
+    response = requests.get(commit_url, headers=headers)
+    return response.json()
+
+
 def analyze_commits(commits: list) -> dict:
     contributors = {}
     for commit in commits:
@@ -30,7 +36,10 @@ def analyze_commits(commits: list) -> dict:
             if username not in contributors:
                 contributors[username] = {"commits": 0, "lines_added": 0}
             contributors[username]["commits"] += 1
-            contributors[username]["lines_added"] += 10
+            
+            commit_details = get_commit_details(commit["url"])
+            stats = commit_details.get("stats", {})
+            contributors[username]["lines_added"] += stats.get("additions", 0)
     return contributors
 
 
