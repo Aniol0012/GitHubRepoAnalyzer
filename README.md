@@ -43,8 +43,8 @@ This project analyzes the commits of a GitHub repository and visualizes the acti
         REPO=username/repo_name
         ```
 
-    > [!NOTE]
-    > You can generate a GitHub token by following the instructions [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+> [!NOTE]
+> You can generate a GitHub token by following the instructions [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token).
 
 5. Configure visualization settings (optional):
 
