@@ -1,6 +1,10 @@
 # This is the configuration file for the application
 
 from os import environ
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 TOKEN = environ.get('TOKEN')
 REPO = environ.get('REPO')
