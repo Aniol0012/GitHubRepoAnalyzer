@@ -6,7 +6,7 @@ token = config.TOKEN
 repo = config.REPO
 base_url = f'https://api.github.com/repos/{repo}'
 
-def get_commits():
+def get_commits() -> list[dict]:
     commits_url = f'{base_url}/commits'
     headers = {'Authorization': f'token {token}'}
     commits = []
@@ -19,7 +19,7 @@ def get_commits():
             break
     return commits
 
-def analyze_commits(commits):
+def analyze_commits(commits: list) -> dict:
     contributors = {}
     for commit in commits:
 
@@ -31,12 +31,12 @@ def analyze_commits(commits):
             contributors[username]['lines_added'] += 10
     return contributors
 
-def get_names(contributors, type=None):
+def get_names(contributors: dict, type: str | None) -> list[str]:
     if not type:
         return [name for name in contributors]
     return [f"{name} [{contributors[name][type]}]" for name in contributors]
 
-def plot_data(contributors):
+def plot_data(contributors: dict) -> None:
     commit_counts = [contrib['commits'] for contrib in contributors.values()]
     lines_added = [contrib['lines_added'] for contrib in contributors.values()]
     
@@ -55,7 +55,7 @@ def plot_data(contributors):
     plt.tight_layout()
     plt.show()
 
-def main():
+def main() -> None:
     commits = get_commits()
     contributors = analyze_commits(commits)
     plot_data(contributors)
