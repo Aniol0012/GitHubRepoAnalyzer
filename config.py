@@ -6,12 +6,12 @@ import os
 
 load_dotenv()
 
-TOKEN = environ.get('TOKEN')
-REPO = environ.get('REPO')
+TOKEN = environ.get("TOKEN")
+REPO = environ.get("REPO")
 
 SHOW_COMMITS_PLOT = True
 SHOW_LINES_ADDED_PLOT = True
 
 ## Styles
-COMMITS_BAR_COLOR = 'steelblue'
-LINES_ADDED_BAR_COLOR = 'green'
+COMMITS_BAR_COLOR = "steelblue"
+LINES_ADDED_BAR_COLOR = "green"
