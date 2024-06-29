@@ -37,7 +37,11 @@ This project analyzes the commits of a GitHub repository and visualizes the acti
 
 4. Set up your environment variables:
 
-    - Create a .env file in the root directory of the project with the following content:
+    - Create a `.env` file in the root directory with the following command:
+        ```bash
+        touch .env
+        ```
+    - Then, define the following variables inside the file:
         ```bash
         GITHUB_TOKEN=your_github_token_here
         REPO=username/repo_name
