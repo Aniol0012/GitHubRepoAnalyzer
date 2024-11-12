@@ -18,8 +18,8 @@ This project analyzes the commits of a GitHub repository and visualizes the acti
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/Computer-Engineering-UdL/JointProject.git
-    cd JointProject
+    git clone https://github.com/Computer-Engineering-UdL/GitHubRepoAnalyzer.git
+    cd GitHubRepoAnalyzer
     ```
 
 2. Create and activate a virtual environment:
