@@ -1,0 +1,43 @@
+name: Python Application
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-python-app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      - name: Set up environment variables
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+          REPO: ${{ secrets.REPO }}
+          LANGUAGE: ${{ secrets.LANGUAGE }}
+        run: |
+          echo "TOKEN=${{ secrets.TOKEN }}" >> .env
+          echo "REPO=${{ secrets.REPO }}" >> .env
+          echo "LANGUAGE=${{ secrets.LANGUAGE }}" >> .env
+
+      - name: Run Python script
+        run: |
+          source venv/bin/activate
+          python main.py
