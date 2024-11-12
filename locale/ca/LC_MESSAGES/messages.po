@@ -1,16 +1,15 @@
 # Catalan translations for PACKAGE package.
 # Copyright (C) 2024 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# U-ANIOL0012\aniol <aniol0012@gmail.com[1;2d[1;2d[1;2d[1;2d[1;2d[1;2d[1;2d[1;2d[1;2d[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c>, 2024.
+# U-ANIOL0012\aniol <aniol0012@gmail.com>, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-12 21:25+0100\n"
-"PO-Revision-Date: 2024-11-12 21:25+0100\n"
-"Last-Translator: U-ANIOL0012\\aniol <aniol0012@gmail."
-"com[1;2d[1;2d[1;2d[1;2d[1;2d[1;2d[1;2d[1;2d[1;2d[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c[1;2c>\n"
+"POT-Creation-Date: 2024-11-12 21:57+0100\n"
+"PO-Revision-Date: 2024-11-12 21:58+0100\n"
+"Last-Translator: U-ANIOL0012\\aniol <aniol0012@gmail.com>\n"
 "Language-Team: Catalan\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
@@ -18,18 +17,30 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: main.py:92
+#: main.py:77
+msgid "Report generated on: "
+msgstr "Informe generat el: "
+
+#: main.py:97
 msgid "Number of Commits per Contributor"
-msgstr ""
+msgstr "Nombre de commits per contribuidor"
 
-#: main.py:93
+#: main.py:98
+msgid " (Total Commits: "
+msgstr " (Total de commits: "
+
+#: main.py:99
 msgid "Number of Commits"
-msgstr ""
+msgstr "Nombre de commits"
 
-#: main.py:102
+#: main.py:118
 msgid "Lines Added per Contributor"
-msgstr ""
+msgstr "Línies afegides per contribuidor"
 
-#: main.py:103
+#: main.py:119
+msgid " (Total Lines Added: )"
+msgstr " (Total de línies afegides: )"
+
+#: main.py:120
 msgid "Number of Lines Added"
-msgstr ""
+msgstr "Nombre de línies afegides"

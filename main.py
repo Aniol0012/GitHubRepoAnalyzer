@@ -1,5 +1,6 @@
 import requests
 import matplotlib.pyplot as plt
+from datetime import datetime
 import config
 import gettext
 
@@ -72,6 +73,9 @@ def plot_data(contributors: dict) -> None:
     if plots_count == 1:
         ax = [ax]
 
+    generation_date = datetime.now().strftime("%Y-%m-%d")
+    fig.suptitle(_("Report generated on: ") + generation_date, fontsize=12, x=0.95, ha="right")
+
     current_plot = 0
 
     if config.SHOW_COMMITS_PLOT:
@@ -84,12 +88,14 @@ def plot_data(contributors: dict) -> None:
         names = [f"{item[0]} \n[{item[1]['commits']}]" for item in sorted_contributors]
         commit_counts = [item[1]["commits"] for item in sorted_contributors]
 
+        total_commits = sum(commit_counts)
         ax[current_plot].bar(
             names,
             commit_counts,
             color=config.COMMITS_BAR_COLOR,
         )
-        ax[current_plot].set_title(_("Number of Commits per Contributor"))
+        ax[current_plot].set_title(_("Number of Commits per Contributor") +
+                                   _(" (Total Commits: ") + str(total_commits) + ")")
         ax[current_plot].set_ylabel(_("Number of Commits"))
         current_plot += 1
 
@@ -103,12 +109,14 @@ def plot_data(contributors: dict) -> None:
         names = [f"{item[0]} \n[{item[1]['lines_added']}]" for item in sorted_contributors]
         lines_added = [item[1]["lines_added"] for item in sorted_contributors]
 
+        total_lines_added = sum(lines_added)
         ax[current_plot].bar(
             names,
             lines_added,
             color=config.LINES_ADDED_BAR_COLOR,
         )
-        ax[current_plot].set_title(_("Lines Added per Contributor"))
+        ax[current_plot].set_title(_("Lines Added per Contributor") +
+                                   _(" (Total Lines Added: ") + str(total_lines_added) + ")")
         ax[current_plot].set_ylabel(_("Number of Lines Added"))
 
     plt.tight_layout()

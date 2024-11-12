@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-12 21:25+0100\n"
+"POT-Creation-Date: 2024-11-12 21:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,18 +17,30 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.py:92
+#: main.py:77
+msgid "Report generated on: "
+msgstr ""
+
+#: main.py:97
 msgid "Number of Commits per Contributor"
 msgstr ""
 
-#: main.py:93
+#: main.py:98
+msgid " (Total Commits: "
+msgstr ""
+
+#: main.py:99
 msgid "Number of Commits"
 msgstr ""
 
-#: main.py:102
+#: main.py:118
 msgid "Lines Added per Contributor"
 msgstr ""
 
-#: main.py:103
+#: main.py:119
+msgid " (Total Lines Added: )"
+msgstr ""
+
+#: main.py:120
 msgid "Number of Lines Added"
 msgstr ""
