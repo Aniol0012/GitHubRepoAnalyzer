@@ -38,8 +38,8 @@ msgid "Lines Added per Contributor"
 msgstr "Línies afegides per contribuidor"
 
 #: main.py:119
-msgid " (Total Lines Added: )"
-msgstr " (Total de línies afegides: )"
+msgid " (Total Lines Added: "
+msgstr " (Total de línies afegides: "
 
 #: main.py:120
 msgid "Number of Lines Added"
