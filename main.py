@@ -1,10 +1,22 @@
 import requests
 import matplotlib.pyplot as plt
 import config
+import gettext
+
+gettext.bindtextdomain('messages', 'locale')
+gettext.textdomain('messages')
+lang_trans = gettext.translation('messages', localedir='locale', languages=[config.LANGUAGE])
+lang_trans.install()
+_ = lang_trans.gettext
 
 token = config.TOKEN
 repo = config.REPO
+
 base_url = f"https://api.github.com/repos/{repo}"
+
+
+def parse_repo(repo: str) -> str:
+    return '/'.join(repo.rstrip('/').split('/')[-2:])
 
 
 def get_commits() -> list[dict]:
@@ -40,7 +52,13 @@ def analyze_commits(commits: list) -> dict:
             commit_details = get_commit_details(commit["url"])
             stats = commit_details.get("stats", {})
             contributors[username]["lines_added"] += stats.get("additions", 0)
-    return contributors
+
+    sorted_contributors = dict(sorted(contributors.items(), key=config.SORT_BY.get_sort_key, reverse=True))
+
+    if config.MAX_CONTRIBUTORS is not None:
+        sorted_contributors = dict(list(sorted_contributors.items())[:config.MAX_CONTRIBUTORS])
+
+    return sorted_contributors
 
 
 def get_names(contributors: dict, type: str | None) -> list[str]:
@@ -71,8 +89,8 @@ def plot_data(contributors: dict) -> None:
             commit_counts,
             color=config.COMMITS_BAR_COLOR,
         )
-        ax[current_plot].set_title("Number of Commits per Contributor")
-        ax[current_plot].set_ylabel("Number of Commits")
+        ax[current_plot].set_title(_("Number of Commits per Contributor"))
+        ax[current_plot].set_ylabel(_("Number of Commits"))
         current_plot += 1
 
     if config.SHOW_LINES_ADDED_PLOT:
@@ -81,14 +99,18 @@ def plot_data(contributors: dict) -> None:
             lines_added,
             color=config.LINES_ADDED_BAR_COLOR,
         )
-        ax[current_plot].set_title("Lines Added per Contributor")
-        ax[current_plot].set_ylabel("Number of Lines Added")
+        ax[current_plot].set_title(_("Lines Added per Contributor"))
+        ax[current_plot].set_ylabel(_("Number of Lines Added"))
 
     plt.tight_layout()
     plt.show()
 
 
 def main() -> None:
+    global repo, base_url
+    repo = parse_repo(repo)
+    base_url = f"https://api.github.com/repos/{repo}"
+
     commits = get_commits()
     contributors = analyze_commits(commits)
     plot_data(contributors)
