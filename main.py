@@ -5,13 +5,12 @@ import gettext
 
 gettext.bindtextdomain('messages', 'locale')
 gettext.textdomain('messages')
-lang_trans = gettext.translation('messages', localedir='locale', languages=[config.LANGUAGE])
+lang_trans = gettext.translation('messages', localedir='locale', languages=[config.LANGUAGE], fallback=True)
 lang_trans.install()
 _ = lang_trans.gettext
 
 token = config.TOKEN
 repo = config.REPO
-
 base_url = f"https://api.github.com/repos/{repo}"
 
 
@@ -20,7 +19,10 @@ def parse_repo(repo: str) -> str:
 
 
 def get_commits() -> list[dict]:
-    commits_url = f"{base_url}/commits"
+    if config.MAX_COMMITS_TO_FETCH is None:
+        commits_url = f"{base_url}/commits"
+    else:
+        commits_url = f"{base_url}/commits?per_page={config.MAX_COMMITS_TO_FETCH}"
     headers = {"Authorization": f"token {token}"}
     commits = []
     while commits_url:
@@ -42,29 +44,25 @@ def get_commit_details(commit_url: str) -> dict:
 def analyze_commits(commits: list) -> dict:
     contributors = {}
     for commit in commits:
-
         if commit.get("author") and commit["author"].get("login"):
             username = commit["author"]["login"]
             if username not in contributors:
                 contributors[username] = {"commits": 0, "lines_added": 0}
             contributors[username]["commits"] += 1
-
             commit_details = get_commit_details(commit["url"])
             stats = commit_details.get("stats", {})
             contributors[username]["lines_added"] += stats.get("additions", 0)
 
     sorted_contributors = dict(sorted(contributors.items(), key=config.SORT_BY.get_sort_key, reverse=True))
-
     if config.MAX_CONTRIBUTORS is not None:
         sorted_contributors = dict(list(sorted_contributors.items())[:config.MAX_CONTRIBUTORS])
-
     return sorted_contributors
 
 
 def get_names(contributors: dict, type: str | None) -> list[str]:
     if not type:
         return [name for name in contributors]
-    return [f"{name} [{contributors[name][type]}]" for name in contributors]
+    return [f"{name} \n[{contributors[name][type]}]" for name in contributors]
 
 
 def get_plots_count() -> int:
@@ -74,7 +72,6 @@ def get_plots_count() -> int:
 def plot_data(contributors: dict) -> None:
     commit_counts = [contrib["commits"] for contrib in contributors.values()]
     lines_added = [contrib["lines_added"] for contrib in contributors.values()]
-
     plots_count = get_plots_count()
     fig, ax = plt.subplots(plots_count, 1, figsize=(10, 8))
 
@@ -110,7 +107,6 @@ def main() -> None:
     global repo, base_url
     repo = parse_repo(repo)
     base_url = f"https://api.github.com/repos/{repo}"
-
     commits = get_commits()
     contributors = analyze_commits(commits)
     plot_data(contributors)

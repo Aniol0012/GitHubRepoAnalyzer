@@ -29,6 +29,7 @@ SHOW_COMMITS_PLOT = True
 SHOW_LINES_ADDED_PLOT = True
 SORT_BY = SortBy.contribution
 MAX_CONTRIBUTORS = 7  # Set to None to show all contributors
+MAX_COMMITS_TO_FETCH = 100  # Set to None to fetch all commits
 
 # Styles
 COMMITS_BAR_COLOR = "steelblue"
