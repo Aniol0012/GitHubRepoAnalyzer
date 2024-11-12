@@ -44,25 +44,21 @@ def get_commit_details(commit_url: str) -> dict:
 def analyze_commits(commits: list) -> dict:
     contributors = {}
     for commit in commits:
-        if commit.get("author") and commit["author"].get("login"):
-            username = commit["author"]["login"]
-            if username not in contributors:
-                contributors[username] = {"commits": 0, "lines_added": 0}
-            contributors[username]["commits"] += 1
-            commit_details = get_commit_details(commit["url"])
-            stats = commit_details.get("stats", {})
-            contributors[username]["lines_added"] += stats.get("additions", 0)
+        author_info = commit.get("author") or commit.get("commit", {}).get("author")
+        if author_info and author_info.get("login"):
+            username = author_info["login"]
+        elif author_info and author_info.get("name"):
+            username = author_info["name"]
+        else:
+            continue
 
-    sorted_contributors = dict(sorted(contributors.items(), key=config.SORT_BY.get_sort_key, reverse=True))
-    if config.MAX_CONTRIBUTORS is not None:
-        sorted_contributors = dict(list(sorted_contributors.items())[:config.MAX_CONTRIBUTORS])
-    return sorted_contributors
-
-
-def get_names(contributors: dict, type: str | None) -> list[str]:
-    if not type:
-        return [name for name in contributors]
-    return [f"{name} \n[{contributors[name][type]}]" for name in contributors]
+        if username not in contributors:
+            contributors[username] = {"commits": 0, "lines_added": 0}
+        contributors[username]["commits"] += 1
+        commit_details = get_commit_details(commit["url"])
+        stats = commit_details.get("stats", {})
+        contributors[username]["lines_added"] += stats.get("additions", 0)
+    return contributors
 
 
 def get_plots_count() -> int:
@@ -70,8 +66,6 @@ def get_plots_count() -> int:
 
 
 def plot_data(contributors: dict) -> None:
-    commit_counts = [contrib["commits"] for contrib in contributors.values()]
-    lines_added = [contrib["lines_added"] for contrib in contributors.values()]
     plots_count = get_plots_count()
     fig, ax = plt.subplots(plots_count, 1, figsize=(10, 8))
 
@@ -81,8 +75,17 @@ def plot_data(contributors: dict) -> None:
     current_plot = 0
 
     if config.SHOW_COMMITS_PLOT:
+        sorted_contributors = sorted(
+            contributors.items(), key=lambda item: item[1]["commits"], reverse=True
+        )
+        if config.MAX_CONTRIBUTORS is not None:
+            sorted_contributors = sorted_contributors[:config.MAX_CONTRIBUTORS]
+
+        names = [f"{item[0]} \n[{item[1]['commits']}]" for item in sorted_contributors]
+        commit_counts = [item[1]["commits"] for item in sorted_contributors]
+
         ax[current_plot].bar(
-            get_names(contributors, "commits"),
+            names,
             commit_counts,
             color=config.COMMITS_BAR_COLOR,
         )
@@ -91,8 +94,17 @@ def plot_data(contributors: dict) -> None:
         current_plot += 1
 
     if config.SHOW_LINES_ADDED_PLOT:
+        sorted_contributors = sorted(
+            contributors.items(), key=lambda item: item[1]["lines_added"], reverse=True
+        )
+        if config.MAX_CONTRIBUTORS is not None:
+            sorted_contributors = sorted_contributors[:config.MAX_CONTRIBUTORS]
+
+        names = [f"{item[0]} \n[{item[1]['lines_added']}]" for item in sorted_contributors]
+        lines_added = [item[1]["lines_added"] for item in sorted_contributors]
+
         ax[current_plot].bar(
-            get_names(contributors, "lines_added"),
+            names,
             lines_added,
             color=config.LINES_ADDED_BAR_COLOR,
         )
