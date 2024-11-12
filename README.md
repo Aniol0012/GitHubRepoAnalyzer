@@ -43,8 +43,9 @@ This project analyzes the commits of a GitHub repository and visualizes the acti
         ```
     - Then, define the following variables inside the file:
         ```bash
-        GITHUB_TOKEN=your_github_token_here
-        REPO=username/repo_name
+        TOKEN="your_github_token_here"
+        REPO="username/repo_name"
+        LANGUAGE="en"
         ```
 
 > [!NOTE]
